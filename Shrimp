@@ -1,0 +1,70 @@
+class Shrimp {
+  PVector pos;
+  PVector vel = new PVector(-1, 0);
+  
+  //when pacman reaches a node its velocity changes to the value stored in turnto
+  PVector turnTo = new PVector(-1, 0);
+  boolean turn = false;
+  int score = 0;
+  int lives = 2;
+  boolean  gameOver = false;
+  
+  float x = width/2 , y = height/2;
+  float w = SIZE, h = SIZE;
+  int col, row;
+  float speed = 2;
+  
+
+  int health = 2;
+  final int PLAYER_MAX_HEALTH = 5;
+ //---------------------------------------------------------------------------------------------------------------------------------------------------------
+  //constructor
+  /*
+  Shrimp() {
+    pos = new PVector(13*16+8, 23*16 +8);
+  }
+  */
+
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------
+  //show shrimp
+  /*
+  void show(){
+    image(idle,pos.x, pos.y);
+  }
+  */
+  void show(){
+    
+    if(leftState){
+      x -= speed;
+      image(leftBack,x,y);
+    }else if(rightState){
+       x += speed;
+       image(rightBack,x,y);
+    }else if(upState){
+      y -= speed;
+      image(back,x,y);
+    }else if(downState){
+      y += speed;
+      image(front,x,y);
+    }else{
+      image(front,x,y);
+    }
+  }
+  
+  boolean checkPosition() {
+    PVector matrixPosition = new PVector((pos.x-13)/24.5, (pos.y - 30)/24.5);//convert position to an array position
+
+    PVector positionToCheck= new PVector(matrixPosition.x + turnTo.x, matrixPosition.y+ turnTo.y); // the position in the tiles double array that the player is turning towards
+
+      if (tiles[floor(positionToCheck.y)][floor(positionToCheck.x)].wall) {//check if there is a free space in the direction that it is going to turn
+        if (tiles[floor(matrixPosition.y + vel.y)][floor(matrixPosition.x + vel.x)].wall) {//if not check if the path ahead is free
+          return false;//if neither are free then dont move
+        } else {//forward is free
+          return true;
+        }
+      } else {//free to turn
+        vel = new PVector(turnTo.x, turnTo.y);
+        return true;
+      }
+}
+}
